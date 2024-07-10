@@ -43,6 +43,9 @@ push:
     - aws configure set region $AWS_REGION
     - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/i0g1s5d6
     #- docker push $ECR_REPOSITORY_URI:latest
+    - docker build -t $APP_NAME .
+    #- docker tag $APP_NAME:latest $ECR_REPOSITORY_URI:latest
+    - docker tag reporting-service:latest public.ecr.aws/i0g1s5d6/reporting-service:latest
     - docker push public.ecr.aws/i0g1s5d6/reporting-service:latest
   only:
     - main
