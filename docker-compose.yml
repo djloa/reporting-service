@@ -1,0 +1,7 @@
+version: "3"
+services:
+  app:
+    image: reporting-service
+    build: .
+    ports:
+      - "8081:8081"
