@@ -23,11 +23,9 @@ before_script:
 build and push:
   stage: build and push
   script:
-    # These steps would be needed if you want to push to a private ECR repository, but for now we're using the public ECR.
-    # Will be leaving them just to show how to do it.
-    # - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    # - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    # - aws configure set region $AWS_REGION
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_REGION
     - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/i0g1s5d6
     - docker build -t $APP_NAME .
     - docker tag $APP_NAME:latest $ECR_REPOSITORY_URI:latest
