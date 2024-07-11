@@ -12,10 +12,10 @@ const app = express();
 
 // Creating a rate limiter
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10, // Limit each IP to 10 requests per window
-    message: 'Too many requests from this IP, please try again after 15 minutes'
-  });
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 requests per window
+  message: 'Too many requests from this IP, please try again after 15 minutes'
+});
 
 // Apply the rate limiter to all requests
 app.use(limiter);

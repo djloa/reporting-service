@@ -4,7 +4,7 @@ const reportsService = require('../service/reports');
 const auth = require('../auth');
 
 
-// Define a route to get all accounts
+// Define a route to get a report of all transactions in the last 30 days grouped by account and currency
 router.get('/reports', auth.authenticateToken, auth.authorizeRole(['admin']), async (req, res) => {
   try {
     // Specify the log group name you want to fetch logs from

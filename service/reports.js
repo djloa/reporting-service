@@ -62,21 +62,24 @@ const fetchLogEvents = async (logGroupName, logStreamName) => {
 
     return logEvents;
 };
+// Function to group data by two fields, will be mainly used to group data by account and currency, but could be used to group data by any combination of fields
+const groupByTwoFields = (array, field1, field2) => {
+    return array.reduce((acc, item) => {
+        const key1 = item[field1];
+        const key2 = item[field2];
 
-const groupBy = (array, property) => {
-    return array.reduce((result, item) => {
-        // Get the value of the property we want to group by
-        const key = item[property];
-
-        // Initialize the group if it doesn't exist yet
-        if (!result[key]) {
-            result[key] = [];
+        // Initialize the nested object structure if not already present
+        if (!acc[key1]) {
+            acc[key1] = {};
+        }
+        if (!acc[key1][key2]) {
+            acc[key1][key2] = [];
         }
 
-        // Add the item to the group
-        result[key].push(item);
+        // Push the current item into the appropriate group
+        acc[key1][key2].push(item);
 
-        return result;
+        return acc;
     }, {});
 };
 
@@ -90,10 +93,9 @@ async function fetchAndParseLogs(logGroupName) {
             const logEvents = await fetchLogEvents(logGroupName, logStream.logStreamName);
             logEvents.forEach(event => transactionData.push(JSON.parse(event.message).detail));
         }
-        // get all accounts from the resultData
-        const result = groupBy(transactionData, 'account');
+        // Group all data by account and currency
+        const result = groupByTwoFields(transactionData, 'account', 'currency');
 
-        console.log(result);
         return result;
     } catch (error) {
         console.error('Error fetching logs:', error);
